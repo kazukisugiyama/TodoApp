@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (validatedQuantity(validatedValue)) {
             addQuantity(addValue);
         } else {
-            Toast.makeText(MainActivity.this, "入力できません", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, "入力できません。", Toast.LENGTH_SHORT).show();
         }
     }
 
