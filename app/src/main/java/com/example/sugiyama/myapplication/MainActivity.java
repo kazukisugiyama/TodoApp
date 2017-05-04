@@ -2,7 +2,10 @@ package com.example.sugiyama.myapplication;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
+import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -11,7 +14,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
 
     private int quantity = 0;
@@ -46,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         adapter = new QuantityInfoAdapter(MainActivity.this);
         adapter.setQuantityInfoList(list);
         quantityInfoListView.setAdapter(adapter);
-
+        quantityInfoListView.setOnItemClickListener(this);
     }
 
     // プラス/マイナスボタンを押した時
@@ -121,5 +124,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         textView.setText("" + quantity);
     }
 
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        QuantityInfo info = list.get(position);
+        info.setSelected(!info.isSelected());
+        adapter.notifyDataSetChanged();
+    }
 }
 
