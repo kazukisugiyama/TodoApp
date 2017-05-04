@@ -14,6 +14,9 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private int quantity = 0;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,9 +25,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initView();
     }
 
+    // 数値の初期値、0を表示
     private void initView() {
         TextView textView = (TextView) findViewById(R.id.textview_quantity);
-        textView.setText("0");
+        textView.setText("" + quantity);
 
         final Button plus_button = (Button) findViewById(R.id.plus_button);
         plus_button.setOnClickListener(this);
@@ -33,35 +37,40 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         minus_button.setOnClickListener(this);
     }
 
+    // プラス/マイナスボタンを押した時
     public void onClick(View view) {
+        // プラスボタンが押下された場合
+        // 加算される数は1になり、上限値が5になる
         int validatedValue = 5;
         int addValue = 1;
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.plus_button:
                 break;
             case R.id.minus_button:
+                // マイナスボタンが押下された場合
+                // 加算される数は-1になり、下限値が0になる
                 validatedValue = 0;
                 addValue = -1;
                 break;
             default:
-                break;
+                return;
         }
 
+        // 数量が上限値または下限値に達していない場合
         if (validatedQuantity(validatedValue)) {
+            // 数量を加算する
             addQuantity(addValue);
         } else {
+            // 達している場合
+            // メッセージを表示、加算しない
             Toast.makeText(MainActivity.this, "入力できません。", Toast.LENGTH_SHORT).show();
         }
     }
 
+    // 数量が引数と同じでない場合、true
     private boolean validatedQuantity(int value) {
-        // 画面に表示している値を取得する
-        TextView textView = (TextView) findViewById(R.id.textview_quantity);
-        String text = textView.getText().toString();
-        // 文字列を数値に変換する
-        int num = Integer.parseInt(text);
-        // 画面に表示している数値が引数と同じ場合、false
-        if (num == value) {
+        // 数量と引数と同じ場合、false
+        if (quantity == value) {
             return false;
         }
 
@@ -69,17 +78,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
+    // 数量を引数分加算し、結果を表示する
     private void addQuantity(int value) {
-        // 画面に表示している値を取得する
-        TextView textView = (TextView) findViewById(R.id.textview_quantity);
-        String text = textView.getText().toString();
         // 引数を加算する
-        int num = Integer.parseInt(text);
-        num = num + value;
+        quantity += value;
         // 計算結果を画面に表示する
-        final String displayText = "" + num;
-        Log.d("debug", displayText);
-        textView.setText(displayText);
+        TextView textView = (TextView) findViewById(R.id.textview_quantity);
+        textView.setText("" + quantity);
     }
 
 
