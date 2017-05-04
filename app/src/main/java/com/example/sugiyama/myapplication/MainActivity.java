@@ -29,18 +29,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     // 数値の初期値、0を表示
     private void initView() {
         // Textview(palette)、textView(変数)
-        TextView textView = (TextView) findViewById(R.id.textview_quantity);
-        textView.setText("" + quantity);
+        TextView quantityTextView = (TextView) findViewById(R.id.textview_quantity);
+        quantityTextView.setText("" + quantity);
 
         //Button(palette)、plus_button(変数)
-        final Button plus_button = (Button) findViewById(R.id.button_plus);
-        plus_button.setOnClickListener(this);
+        final Button plusButton = (Button) findViewById(R.id.button_plus);
+        plusButton.setOnClickListener(this);
 
-        final Button minus_button = (Button) findViewById(R.id.button_minus);
-        minus_button.setOnClickListener(this);
+        final Button minusButton = (Button) findViewById(R.id.button_minus);
+        minusButton.setOnClickListener(this);
 
-        final Button button_add = (Button) findViewById(R.id.button_add);
-        button_add.setOnClickListener(this);
+        final Button addButton = (Button) findViewById(R.id.button_add);
+        addButton.setOnClickListener(this);
 
         ListView quantityInfoListView = (ListView) findViewById(R.id.listview_quantity_info);
         adapter = new QuantityInfoAdapter(MainActivity.this);
@@ -66,20 +66,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.button_add:
                 // 追加ボタンを押下された場合
-                // 時刻を取得する
-                TextView textView = (TextView) findViewById(R.id.label_time);
-                String time = textView.getText().toString();
-                // コメントを取得する
-                EditText edittext = (EditText) findViewById(R.id.edit_comment);
-                String comment = edittext.getText().toString();
-
-                QuantityInfo quantityInfo = new QuantityInfo();
-                quantityInfo.setTime(time);
-                quantityInfo.setComment(comment);
-                quantityInfo.setQuantity(quantity);
-                list.add(quantityInfo);
-                adapter.notifyDataSetChanged();
-
+                // 数量情報を1件追加する
+                addQuantityInfo();
+                return;
             default:
                 return;
         }
@@ -95,6 +84,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    // 追加ボタン押下後の処理
+    private void addQuantityInfo() {
+        // 時刻を取得する
+        TextView textView = (TextView) findViewById(R.id.label_time);
+        String time = textView.getText().toString();
+        // コメントを取得する
+        EditText edittext = (EditText) findViewById(R.id.edit_comment);
+        String comment = edittext.getText().toString();
+        // 数量情報を1件追加する
+        QuantityInfo quantityInfo = new QuantityInfo();
+        quantityInfo.setTime(time);
+        quantityInfo.setComment(comment);
+        quantityInfo.setQuantity(quantity);
+        list.add(quantityInfo);
+        // リストの表示更新
+        adapter.notifyDataSetChanged();
+    }
+
     // 数量が引数と同じでない場合、true
     private boolean validatedQuantity(int value) {
         // 数量と引数と同じ場合、false
@@ -105,7 +112,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return true;
     }
 
-
     // 数量を引数分加算し、結果を表示する
     private void addQuantity(int value) {
         // 引数を加算する
@@ -114,7 +120,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         TextView textView = (TextView) findViewById(R.id.textview_quantity);
         textView.setText("" + quantity);
     }
-
 
 }
 
