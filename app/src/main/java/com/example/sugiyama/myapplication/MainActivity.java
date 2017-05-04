@@ -1,22 +1,22 @@
 package com.example.sugiyama.myapplication;
 
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private int quantity = 0;
 
+    private int quantity = 0;
+    private ArrayList<QuantityInfo> list = new ArrayList<>();
+    private QuantityInfoAdapter adapter = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +42,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         final Button button_add = (Button) findViewById(R.id.button_add);
         button_add.setOnClickListener(this);
 
+        ListView quantityInfoListView = (ListView) findViewById(R.id.listview_quantity_info);
+        adapter = new QuantityInfoAdapter(MainActivity.this);
+        adapter.setQuantityInfoList(list);
+        quantityInfoListView.setAdapter(adapter);
+
     }
 
     // プラス/マイナスボタンを押した時
@@ -63,14 +68,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 // 追加ボタンを押下された場合
                 // 時刻を取得する
                 TextView textView = (TextView) findViewById(R.id.label_time);
-                String text = textView.getText().toString();
+                String time = textView.getText().toString();
                 // コメントを取得する
                 EditText edittext = (EditText) findViewById(R.id.edit_comment);
                 String comment = edittext.getText().toString();
-                // 時刻とコメントを結合させる
-                String message = text + comment ;
-                // 時刻とコメントを表示させる
-                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+
+                QuantityInfo quantityInfo = new QuantityInfo();
+                quantityInfo.setTime(time);
+                quantityInfo.setComment(comment);
+                quantityInfo.setQuantity(quantity);
+                list.add(quantityInfo);
+                adapter.notifyDataSetChanged();
 
             default:
                 return;
