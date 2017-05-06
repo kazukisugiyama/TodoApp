@@ -52,30 +52,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     // プラス/マイナスボタンを押した時
     public void onClick(View view) {
-        // プラスボタンが押下された場合
-        // 加算される数は1になり、上限値が5になる
-        int validatedValue = 5;
-        int addValue = 1;
         switch (view.getId()) {
             case R.id.button_plus:
-                break;
+                // プラスボタンが押下された場合
+                // 加算される数は1になり、上限値が5になる
+                calcQuantity(1, 5);
+                return;
             case R.id.button_minus:
                 // マイナスボタンが押下された場合
                 // 加算される数は-1になり、下限値が0になる
-                validatedValue = 0;
-                addValue = -1;
-                break;
+                calcQuantity(-1, 0);
+                return;
             case R.id.button_add:
                 // 追加ボタンを押下された場合
                 // 数量情報を1件追加する
                 addQuantityInfo();
                 return;
+            case R.id.button_clear:
+                //クリアボタンを押下された場合
+                // 全てのチェック項目をクリアする
+                clearList();
+                return;
             default:
                 return;
         }
+    }
+
+    private void calcQuantity(int addValue, int validatedValue) {
 
         // 数量が上限値または下限値に達していない場合
-        if (validatedQuantity(validatedValue)) {
+         if (validatedQuantity(validatedValue)) {
             // 数量を加算する
             addQuantity(addValue);
         } else {
@@ -83,6 +89,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             // メッセージを表示、加算しない
             Toast.makeText(MainActivity.this, R.string.toast_validated_quantity_ng, Toast.LENGTH_SHORT).show();
         }
+    }
+
+    // クリアボタン押下後の処理
+    private void clearList() {
+        // // リストを全てクリア
+        list.clear();
+        // リストの表示更新
+        adapter.notifyDataSetChanged();
     }
 
 

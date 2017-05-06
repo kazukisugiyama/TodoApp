@@ -5,4 +5,6 @@
     <string name="toast_validated_quantity_ng">入力できません。</string>
     <string name="button_add">追加</string>
     <string name="button_delete">削除</string>
+    <string name="button_clear">クリア</string>
+    <string name="button_select">選択された合計数量</string>
 </resources>

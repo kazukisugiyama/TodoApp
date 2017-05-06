@@ -6,16 +6,9 @@
     android:layout_height="match_parent"
     tools:context="com.example.sugiyama.myapplication.MainActivity">
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="55dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -39,16 +32,14 @@
 
             <Button
                 android:id="@+id/button_plus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
                 android:text="+" />
 
             <Button
                 android:id="@+id/button_minus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.92"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
                 android:text="-" />
 
         </LinearLayout>
@@ -75,41 +66,41 @@
 
             <Button
                 android:id="@+id/button_add"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
                 android:text="@string/button_add"
                 android:textSize="18sp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:orientation="horizontal">
 
             <ListView
                 android:id="@+id/listview_quantity_info"
                 android:layout_width="match_parent"
-                android:layout_height="340dp" />
+                android:layout_height="match_parent" />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="364dp"
             android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/button3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Button" />
+                android:id="@+id/button_clear"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:text="@string/button_clear" />
 
             <Button
-                android:id="@+id/button2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Button" />
+                android:id="@+id/button_select"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="@string/button_select" />
         </LinearLayout>
 
     </LinearLayout>

@@ -1,42 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:descendantFocusability="blocksDescendants"
     android:orientation="horizontal">
 
-    <CheckBox
-        android:id="@+id/chk_select"
-        android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        android:enabled="false" />
-
-    <TextView
-        android:id="@+id/textview_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_weight="1"
-        android:text="TextView" />
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/textview_quantity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="TextView" />
+        <CheckBox
+            android:id="@+id/chk_select"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:enabled="false" />
 
-    <TextView
-        android:id="@+id/textview_comment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="TextView" />
+        <TextView
+            android:id="@+id/textview_time"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:text="00:00:00"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/textview_quantity"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:text="9,999"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/textview_comment"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="TextView"
+            android:textSize="18sp" />
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/button_delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:text="@string/button_delete" />
 
 </LinearLayout>
