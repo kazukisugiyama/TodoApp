@@ -43,6 +43,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         final Button addButton = (Button) findViewById(R.id.button_add);
         addButton.setOnClickListener(this);
 
+        final Button clearButton = (Button) findViewById(R.id.button_clear);
+        clearButton.setOnClickListener(this);
+
         ListView quantityInfoListView = (ListView) findViewById(R.id.listview_quantity_info);
         adapter = new QuantityInfoAdapter(MainActivity.this);
         adapter.setQuantityInfoList(list);
