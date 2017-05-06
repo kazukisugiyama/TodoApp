@@ -2,17 +2,17 @@ package com.example.sugiyama.myapplication;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.icu.text.RelativeDateTimeFormatter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class QuantityInfoAdapter extends BaseAdapter {
+public class QuantityInfoAdapter extends BaseAdapter implements View.OnClickListener {
 
     private Context context;
     private LayoutInflater layoutInflater = null;
@@ -20,7 +20,7 @@ public class QuantityInfoAdapter extends BaseAdapter {
 
     public QuantityInfoAdapter(Context context) {
         this.context = context;
-        this.layoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     public void setQuantityInfoList(ArrayList<QuantityInfo> quantityInfoList) {
@@ -60,21 +60,36 @@ public class QuantityInfoAdapter extends BaseAdapter {
             switch (position % 2) {
                 case 0:
                     // 偶数だった場合
-                    convertView.setBackgroundColor(0);
+                    convertView.setBackgroundColor(Color.BLUE);
                     break;
                 case 1:
                     // 奇数だった場合
-                    convertView.setBackgroundColor(Color.BLUE);
+                    convertView.setBackgroundColor(0);
                     break;
             }
         }
 
-        ((CheckBox)convertView.findViewById(R.id.chk_select)).setChecked(info.isSelected());
-        ((TextView)convertView.findViewById(R.id.textview_time)).setText(info.getTime());
-        ((TextView)convertView.findViewById(R.id.textview_quantity)).setText("" + info.getQuantity());
-        ((TextView)convertView.findViewById(R.id.textview_comment)).setText(info.getComment());
+        Button deleteButton = (Button) convertView.findViewById(R.id.button_delete);
+        deleteButton.setOnClickListener(this);
+        deleteButton.setTag(position);
+
+        ((CheckBox) convertView.findViewById(R.id.chk_select)).setChecked(info.isSelected());
+        ((TextView) convertView.findViewById(R.id.textview_time)).setText(info.getTime());
+        ((TextView) convertView.findViewById(R.id.textview_quantity)).setText("" + info.getQuantity());
+        ((TextView) convertView.findViewById(R.id.textview_comment)).setText(info.getComment());
 
         return convertView;
     }
 
+    @Override
+    // 削除ボタン押下後の処理
+    public void onClick(View v) {
+
+        // リストの中から選択したinfoを削除
+        int position = Integer.valueOf(v.getTag().toString()).intValue();
+        quantityInfoList.remove(position);
+        // listViewの表示更新
+        notifyDataSetChanged();
+
+    }
 }

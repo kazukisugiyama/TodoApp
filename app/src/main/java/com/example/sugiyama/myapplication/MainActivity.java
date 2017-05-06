@@ -2,9 +2,7 @@ package com.example.sugiyama.myapplication;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -86,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Toast.makeText(MainActivity.this, R.string.toast_validated_quantity_ng, Toast.LENGTH_SHORT).show();
         }
     }
+
 
     // 追加ボタン押下後の処理
     private void addQuantityInfo() {
