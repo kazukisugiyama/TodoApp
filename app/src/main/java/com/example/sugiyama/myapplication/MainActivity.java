@@ -1,9 +1,7 @@
 package com.example.sugiyama.myapplication;
 
-import android.icu.text.MessageFormat;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -18,14 +16,15 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static android.R.attr.format;
-
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
     private int quantity = 0;
     private ArrayList<QuantityInfo> list = new ArrayList<>();
     private QuantityInfoAdapter adapter = null;
-    private static SimpleDateFormat formatter = new SimpleDateFormat("kk:mm:ss");
+    private final SimpleDateFormat formatter = new SimpleDateFormat("kk:mm:ss");
+    private final Timer timer = new Timer();
+    private TextView timerTextView = null;
+    private TimerTask timerTask = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +34,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initView();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        // 現在時刻の表示
+                        timerTextView.setText(formatter.format(new Date()));
+                    }
+                });
+            }
+        };
+        timer.scheduleAtFixedRate(timerTask, 0, 1000);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // バックグラウンドでの時刻表示の廃止
+        timerTask.cancel();
+    }
 
     // 数値の初期値、0を表示
     private void initView() {
@@ -55,23 +79,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         final Button clearButton = (Button) findViewById(R.id.button_clear);
         clearButton.setOnClickListener(this);
 
-        // 現在時刻の表示
-        final TextView label_time;
-        label_time = (TextView)findViewById(R.id.label_time);
-        Timer timer1 = new Timer();
-        timer1.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                Log.d("run", "TimerTask Thread id = " + Thread.currentThread().getId());
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Log.d("run", "runOnUiThread Thread id = " + Thread.currentThread().getId());
-                        label_time.setText(formatter.format(new Date()));
-                    }
-                });
-            }
-        }, 0, 1000);
+        timerTextView = (TextView) findViewById(R.id.textview_time);
 
         ListView quantityInfoListView = (ListView) findViewById(R.id.listview_quantity_info);
         adapter = new QuantityInfoAdapter(MainActivity.this);
@@ -85,22 +93,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()) {
             case R.id.button_plus:
                 // プラスボタンが押下された場合
-                // 加算される数は1になり、上限値が5になる
+                // 加算される数、上限値
                 calcQuantity(1, 9999);
                 return;
             case R.id.button_minus:
                 // マイナスボタンが押下された場合
-                // 加算される数は-1になり、下限値が0になる
+                // 加算される数、下限値
                 calcQuantity(-1, 0);
                 return;
             case R.id.button_add:
                 // 追加ボタンを押下された場合
-                // 数量情報を1件追加する
+                // 数量情報を1件追加
                 addQuantityInfo();
                 return;
             case R.id.button_clear:
                 //クリアボタンを押下された場合
-                // 全てのチェック項目をクリアする
+                // 全てのチェック項目をクリア
                 clearList();
                 return;
             default:
@@ -133,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     // 追加ボタン押下後の処理
     private void addQuantityInfo() {
         // 時刻を取得する
-        TextView textView = (TextView) findViewById(R.id.label_time);
+        TextView textView = (TextView) findViewById(R.id.textview_time);
         String time = textView.getText().toString();
         // コメントを取得する
         EditText edittext = (EditText) findViewById(R.id.edit_comment);
