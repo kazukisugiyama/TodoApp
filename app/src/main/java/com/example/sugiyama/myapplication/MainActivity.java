@@ -1,7 +1,9 @@
 package com.example.sugiyama.myapplication;
 
+import android.icu.text.MessageFormat;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -10,14 +12,20 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import static android.R.attr.format;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
-
 
     private int quantity = 0;
     private ArrayList<QuantityInfo> list = new ArrayList<>();
     private QuantityInfoAdapter adapter = null;
+    private static SimpleDateFormat formatter = new SimpleDateFormat("kk:mm:ss");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         initView();
     }
+
 
     // 数値の初期値、0を表示
     private void initView() {
@@ -46,6 +55,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         final Button clearButton = (Button) findViewById(R.id.button_clear);
         clearButton.setOnClickListener(this);
 
+        // 現在時刻の表示
+        final TextView label_time;
+        label_time = (TextView)findViewById(R.id.label_time);
+        Timer timer1 = new Timer();
+        timer1.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Log.d("run", "TimerTask Thread id = " + Thread.currentThread().getId());
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.d("run", "runOnUiThread Thread id = " + Thread.currentThread().getId());
+                        label_time.setText(formatter.format(new Date()));
+                    }
+                });
+            }
+        }, 0, 1000);
+
         ListView quantityInfoListView = (ListView) findViewById(R.id.listview_quantity_info);
         adapter = new QuantityInfoAdapter(MainActivity.this);
         adapter.setQuantityInfoList(list);
@@ -59,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.button_plus:
                 // プラスボタンが押下された場合
                 // 加算される数は1になり、上限値が5になる
-                calcQuantity(1, 5);
+                calcQuantity(1, 9999);
                 return;
             case R.id.button_minus:
                 // マイナスボタンが押下された場合
