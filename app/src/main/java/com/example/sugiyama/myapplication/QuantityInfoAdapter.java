@@ -85,7 +85,7 @@ public class QuantityInfoAdapter extends BaseAdapter implements View.OnClickList
     // 削除ボタン押下後の処理
     public void onClick(View v) {
 
-        // リストの中から選択したinfoを削除
+        // リストの中から選択したinfo削除
         int position = Integer.valueOf(v.getTag().toString()).intValue();
         quantityInfoList.remove(position);
         // listViewの表示更新

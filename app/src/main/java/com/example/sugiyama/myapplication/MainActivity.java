@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    // クリアボタン押下後の処理
+    // ボタン押下後の処理
     private void clearList() {
         // // リストを全てクリア
         list.clear();
