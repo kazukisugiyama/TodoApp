@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     // 数値の初期値、0を表示
     private void initView() {
-        // Textview(palette)、textView(変数)
+        // Textview(palette)、textView(変数)4
         TextView quantityTextView = (TextView) findViewById(R.id.textview_quantity);
         quantityTextView.setText("" + quantity);
 
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         quantityInfoListView.setOnItemClickListener(this);
     }
 
-    // プラス/マイナスボタンを押した時
+    // ボタンを押した時
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button_plus:
