@@ -1,7 +1,8 @@
 package com.example.sugiyama.myapplication;
 
-// aa
-public class QuantityInfo {
+import java.io.Serializable;
+
+public class QuantityInfo implements Serializable {
     private int quantity;
     private String time;
     private String comment;

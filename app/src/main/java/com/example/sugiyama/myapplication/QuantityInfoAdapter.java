@@ -1,6 +1,7 @@
 package com.example.sugiyama.myapplication;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -93,3 +94,7 @@ public class QuantityInfoAdapter extends BaseAdapter implements View.OnClickList
 
     }
 }
+
+    // リストをタップ後の処理
+
+

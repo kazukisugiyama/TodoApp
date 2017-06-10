@@ -1,6 +1,8 @@
 package com.example.sugiyama.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,7 +18,7 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class MainActivity extends AppCompatActivity implements  View.OnClickListener, AdapterView.OnItemClickListener {
 
     private int quantity = 0;
     private ArrayList<QuantityInfo> list = new ArrayList<>();
@@ -67,17 +69,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         quantityTextView.setText("" + quantity);
 
         //Button(palette)、plus_button(変数)
+        // プラスボタン
         final Button plusButton = (Button) findViewById(R.id.button_plus);
         plusButton.setOnClickListener(this);
 
+        // マイナスボタン
         final Button minusButton = (Button) findViewById(R.id.button_minus);
         minusButton.setOnClickListener(this);
 
+        // 追加ボタン
         final Button addButton = (Button) findViewById(R.id.button_add);
         addButton.setOnClickListener(this);
 
+        // クリアボタン
         final Button clearButton = (Button) findViewById(R.id.button_clear);
         clearButton.setOnClickListener(this);
+
+        // 選択された合計数量ボタン
+        final Button selectButton = (Button) findViewById(R.id.button_select);
+        selectButton.setOnClickListener(this);
 
         timerTextView = (TextView) findViewById(R.id.textview_time);
 
@@ -107,9 +117,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 addQuantityInfo();
                 return;
             case R.id.button_clear:
-                //クリアボタンを押下された場合
+                // クリアボタンを押下された場合
                 // 全てのチェック項目をクリア
                 clearList();
+                return;
+            case R.id.button_select:
+                // 選択された合計数量ボタンを押下された場合
+                // 合計数量を計算し表示
+                selectList();
                 return;
             default:
                 return;
@@ -119,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void calcQuantity(int addValue, int validatedValue) {
 
         // 数量が上限値または下限値に達していない場合
-         if (validatedQuantity(validatedValue)) {
+        if (validatedQuantity(validatedValue)) {
             // 数量を加算する
             addQuantity(addValue);
         } else {
@@ -129,9 +144,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    // ボタン押下後の処理
+    // 選択された合計数量ボタン押下後の処理
+    private void selectList() {
+        // 選択されたボタンの中の数量を取得
+
+        // ライナーレイアウトを
+
+        // 数量を合計
+
+        // 表示
+
+    }
+
+    // クリアボタン押下後の処理
     private void clearList() {
-        // // リストを全てクリア
+        // リストを全てクリア
         list.clear();
         // リストの表示更新
         adapter.notifyDataSetChanged();
@@ -154,6 +181,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         list.add(quantityInfo);
         // リストの表示更新
         adapter.notifyDataSetChanged();
+
     }
 
     // 数量が引数と同じでない場合、true
@@ -177,9 +205,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        QuantityInfo info = list.get(position);
-        info.setSelected(!info.isSelected());
-        adapter.notifyDataSetChanged();
+//        QuantityInfo info = list.get(position);
+//        info.setSelected(!info.isSelected());
+//        adapter.notifyDataSetChanged();
+        // 画面遷移
+        Intent intent = new Intent(getApplication(), DetailActivity.class);
+        QuantityInfo info =list.get(position);
+        intent.putExtra("QuantityInfo", info);
+        startActivity(intent);
+
     }
 }
-

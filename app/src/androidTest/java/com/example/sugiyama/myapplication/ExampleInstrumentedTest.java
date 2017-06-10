@@ -1,8 +1,12 @@
 package com.example.sugiyama.myapplication;
 
+import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
+import android.view.View;
+import android.widget.Button;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,5 +26,22 @@ public class ExampleInstrumentedTest {
         Context appContext = InstrumentationRegistry.getTargetContext();
 
         assertEquals("com.example.sugiyama.myapplication", appContext.getPackageName());
+    }
+
+    public static class DetailScreen extends Activity {
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_detail);
+
+            Button addButton = (Button) findViewById(R.id.button_add);
+            addButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+        }
     }
 }
