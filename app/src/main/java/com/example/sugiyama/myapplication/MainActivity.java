@@ -131,6 +131,8 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
         }
     }
 
+
+
     private void calcQuantity(int addValue, int validatedValue) {
 
         // 数量が上限値または下限値に達していない場合
