@@ -1,5 +1,6 @@
 package com.example.sugiyama.myapplication;
 
+import android.graphics.Bitmap;
 import java.io.Serializable;
 
 public class QuantityInfo implements Serializable {
@@ -7,6 +8,11 @@ public class QuantityInfo implements Serializable {
     private String time;
     private String comment;
     private boolean isSelected;
+    private boolean bitmap;
+
+    public boolean getBitmap() { return bitmap; }
+
+    public void setBitmap(boolean bitmap) { this.bitmap = bitmap; }
 
     public boolean isSelected() {
         return isSelected;
