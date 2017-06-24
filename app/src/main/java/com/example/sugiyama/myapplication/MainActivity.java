@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,6 +18,7 @@ import android.widget.Toast;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -151,11 +154,20 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
 
     // 選択された合計数量ボタン押下後の処理
     private void selectList() {
-        // 数量を取得する
-        TextView textView = (TextView) findViewById(R.id.textview_quantity);
-        String quantity = textView.getText().toString();
-        Toast.makeText(MainActivity.this, quantity, Toast.LENGTH_SHORT).show();
+        int sum = 0;
+
+        for (QuantityInfo info : list) {
+            // チェックボックスにチェックが入っている場合
+            if (info.isSelected()) {
+                // 数量を加算する
+                sum += info.quantity;
+            }
+        }
+        // トーストに結果表示
+        String viewQuantity = String.valueOf(sum);
+        Toast.makeText(MainActivity.this, viewQuantity, Toast.LENGTH_SHORT).show();
     }
+
 
 
     // クリアボタン押下後の処理
@@ -206,7 +218,7 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
     }
 
     @Override
-    // ビュー押下後の処理
+    // ビュー押下後の処理　後ほど削除
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         QuantityInfo info = list.get(position);
         info.setSelected(!info.isSelected());

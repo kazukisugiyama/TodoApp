@@ -3,7 +3,7 @@ package com.example.sugiyama.myapplication;
 import java.io.Serializable;
 
 public class QuantityInfo implements Serializable {
-    private int quantity;
+    public int quantity;
     private String time;
     private String comment;
     private boolean isSelected;
