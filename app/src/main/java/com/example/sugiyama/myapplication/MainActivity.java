@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -18,7 +19,7 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MainActivity extends AppCompatActivity implements  View.OnClickListener, AdapterView.OnItemClickListener {
+public class MainActivity extends AppCompatActivity implements  View.OnClickListener, AdapterView.OnItemClickListener,AdapterView.OnItemLongClickListener {
 
     private int quantity = 0;
     private ArrayList<QuantityInfo> list = new ArrayList<>();
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
     }
 
     @Override
+    //
     protected void onResume() {
         super.onResume();
 
@@ -96,6 +98,7 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
         adapter.setQuantityInfoList(list);
         quantityInfoListView.setAdapter(adapter);
         quantityInfoListView.setOnItemClickListener(this);
+        quantityInfoListView.setOnItemLongClickListener(this);
     }
 
     // ボタンを押した時
@@ -148,15 +151,12 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
 
     // 選択された合計数量ボタン押下後の処理
     private void selectList() {
-        // 選択されたボタンの中の数量を取得
-
-        // ライナーレイアウトを
-
-        // 数量を合計
-
-        // 表示
-
+        // 数量を取得する
+        TextView textView = (TextView) findViewById(R.id.textview_quantity);
+        String quantity = textView.getText().toString();
+        Toast.makeText(MainActivity.this, quantity, Toast.LENGTH_SHORT).show();
     }
+
 
     // クリアボタン押下後の処理
     private void clearList() {
@@ -206,15 +206,21 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
     }
 
     @Override
+    // ビュー押下後の処理
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//        QuantityInfo info = list.get(position);
-//        info.setSelected(!info.isSelected());
-//        adapter.notifyDataSetChanged();
+        QuantityInfo info = list.get(position);
+        info.setSelected(!info.isSelected());
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
         // 画面遷移
         Intent intent = new Intent(getApplication(), DetailActivity.class);
         QuantityInfo info =list.get(position);
         intent.putExtra("QuantityInfo", info);
         startActivity(intent);
 
+        return true;
     }
 }
