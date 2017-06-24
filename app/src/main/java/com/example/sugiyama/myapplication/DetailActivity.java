@@ -24,7 +24,7 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         setTitle("");
-        imageView = (ImageView)findViewById(R.id.image_view);
+        imageView = (ImageView)findViewById(R.id.image_View);
 
         Intent intent = getIntent();
         //MainActivityから値を受け取る
@@ -41,6 +41,7 @@ public class DetailActivity extends AppCompatActivity {
         time.setText(info.getTime());
         comment.setText(info.getComment());
         quantity.setText("" + info.getQuantity());
+
 
 
         // ボタン押下後の処理
