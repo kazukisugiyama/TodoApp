@@ -1,18 +1,29 @@
 package com.example.sugiyama.myapplication;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
+import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
 
 public class QuantityInfo implements Serializable {
+
     public int quantity;
     private String time;
     private String comment;
     private boolean isSelected;
-    private boolean bitmap;
+    private int editIndex;
+    private String bitmapString;
 
-    public boolean getBitmap() { return bitmap; }
 
-    public void setBitmap(boolean bitmap) { this.bitmap = bitmap; }
+
+    public int getEditIndex() {
+        return editIndex;
+    }
+
+    public void setEditIndex(int editIndex) {
+        editIndex = editIndex;
+    }
 
     public boolean isSelected() {
         return isSelected;
@@ -22,6 +33,7 @@ public class QuantityInfo implements Serializable {
         isSelected = selected;
     }
 
+
     public int getQuantity() {
         return quantity;
     }
@@ -30,11 +42,13 @@ public class QuantityInfo implements Serializable {
         this.quantity = quantity;
     }
 
+
     public String getTime() {
         return time;
     }
 
     public void setTime(String time) {this.time = time;}
+
 
     public String getComment() {
         return comment;
@@ -42,3 +56,5 @@ public class QuantityInfo implements Serializable {
 
     public void setComment(String comment) {this.comment = comment;}
 }
+
+

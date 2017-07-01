@@ -1,6 +1,10 @@
 package com.example.sugiyama.myapplication;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -31,6 +36,8 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
     private final Timer timer = new Timer();
     private TextView timerTextView = null;
     private TimerTask timerTask = null;
+    static final int RESULT_CODE_SUB_ACTIVITY = 1000;
+    private static final int RESULT_BACK = 9999;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
         };
         timer.scheduleAtFixedRate(timerTask, 0, 1000);
     }
+
 
     @Override
     protected void onPause() {
@@ -138,7 +146,6 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
     }
 
 
-
     private void calcQuantity(int addValue, int validatedValue) {
 
         // 数量が上限値または下限値に達していない場合
@@ -169,7 +176,6 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
     }
 
 
-
     // クリアボタン押下後の処理
     private void clearList() {
         // リストを全てクリア
@@ -181,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
 
     // 追加ボタン押下後の処理
     private void addQuantityInfo() {
-        // 時刻を取得する
+
         TextView textView = (TextView) findViewById(R.id.textview_time);
         String time = textView.getText().toString();
         // コメントを取得する
@@ -192,9 +198,25 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
         quantityInfo.setTime(time);
         quantityInfo.setComment(comment);
         quantityInfo.setQuantity(quantity);
+
+        //リストの表示更新
         list.add(quantityInfo);
-        // リストの表示更新
         adapter.notifyDataSetChanged();
+
+        //        // 時刻を取得する
+//        TextView textView = (TextView) findViewById(R.id.textview_time);
+//        String time = textView.getText().toString();
+//        // コメントを取得する
+//        EditText edittext = (EditText) findViewById(R.id.edit_comment);
+//        String comment = edittext.getText().toString();
+//        // 数量情報を1件追加する
+//        QuantityInfo quantityInfo = new QuantityInfo();
+//        quantityInfo.setTime(time);
+//        quantityInfo.setComment(comment);
+//        quantityInfo.setQuantity(quantity);
+//        list.add(quantityInfo);
+//        // リストの表示更新
+//        adapter.notifyDataSetChanged();
 
     }
 
@@ -218,7 +240,7 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
     }
 
     @Override
-    // ビュー押下後の処理　後ほど削除
+    // ビュー押下後の処理
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         QuantityInfo info = list.get(position);
         info.setSelected(!info.isSelected());
@@ -228,11 +250,31 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
         // 画面遷移
-        Intent intent = new Intent(getApplication(), DetailActivity.class);
-        QuantityInfo info =list.get(position);
-        intent.putExtra("QuantityInfo", info);
-        startActivity(intent);
+        QuantityInfo info = list.get(position);
+        info.setEditIndex(position);
+        Intent intent = DetailActivity.getNewIntent(this, info);
+        startActivityForResult(intent, RESULT_CODE_SUB_ACTIVITY);
 
         return true;
+    }
+
+    // メイン画面に遷移した時の処理
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        Log.d("onActivityResult", String.valueOf(resultCode));
+       super.onActivityResult(requestCode, resultCode, intent);
+
+        switch (requestCode) {
+            case RESULT_CODE_SUB_ACTIVITY:
+                if (resultCode == RESULT_OK) {
+
+                    intent = getIntent();
+                    Bitmap bitmap = (Bitmap) intent.getParcelableExtra("intent-key");
+                    Set<String> keys = intent.getExtras().keySet();
+                    for (String key : keys) {
+                        Log.d("intent-key", key);
+                    }
+                }
+        }
     }
 }

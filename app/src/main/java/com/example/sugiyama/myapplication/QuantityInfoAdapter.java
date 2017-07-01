@@ -95,6 +95,4 @@ public class QuantityInfoAdapter extends BaseAdapter implements View.OnClickList
     }
 }
 
-    // リストをタップ後の処理
-
 

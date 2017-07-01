@@ -50,14 +50,14 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         retrunButton.setOnClickListener(this);
 
         Intent intent = getIntent();
-        //MainActivityから値を受け取る
+        // MainActivityから値を受け取る
         QuantityInfo info = (QuantityInfo) getIntent().getSerializableExtra(INTENT_KEY_QUANTITY_INFO_LIST);
 
-        //id textView1をt1に当てはめている
+        // id textView1をt1に当てはめている
         TextView time = (TextView) findViewById(R.id.textView1);
-        //id textView1をt2に当てはめている
+        // id textView1をt2に当てはめている
         TextView comment = (TextView) findViewById(R.id.textView2);
-        //id textView1をt3に当てはめている
+        // id textView1をt3に当てはめている
         TextView quantity = (TextView) findViewById(R.id.textView3);
 
         //受け取った値を表示
