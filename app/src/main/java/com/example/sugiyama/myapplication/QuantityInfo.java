@@ -12,18 +12,9 @@ public class QuantityInfo implements Serializable {
     private String time;
     private String comment;
     private boolean isSelected;
-    private int editIndex;
-    private String bitmapString;
+    Bitmap bitmap;
 
 
-
-    public int getEditIndex() {
-        return editIndex;
-    }
-
-    public void setEditIndex(int editIndex) {
-        editIndex = editIndex;
-    }
 
     public boolean isSelected() {
         return isSelected;

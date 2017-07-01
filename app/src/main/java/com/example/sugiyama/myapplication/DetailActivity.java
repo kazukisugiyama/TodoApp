@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.view.View;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import java.io.ByteArrayOutputStream;
 import java.io.FileDescriptor;
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 
 public class DetailActivity extends AppCompatActivity implements View.OnClickListener {
@@ -27,20 +29,22 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     private ImageView imageView;
     private int mImageType = 0;
     private ArrayList<QuantityInfo> infoList = new ArrayList<>();
-    private static final String INTENT_KEY_QUANTITY_INFO_LIST = "intent_key_quantity_kist";
-    Bitmap bitmap = null;
+    private ArrayList<AppBean> list = new ArrayList<>();
+    private static final String INTENT_KEY_QUANTITY_INFO_ROW = "intent_key_row";
+    private QuantityInfo info ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-        setTitle("");
-        imageView = (ImageView) findViewById(R.id.image_view);
 
         initView();
     }
 
     private void initView() {
+        setTitle("");
+        imageView = (ImageView) findViewById(R.id.image_view);
+
         // 画像選択ボタン
         final Button selectButton = (Button) findViewById(R.id.button_activity_detail_select);
         selectButton.setOnClickListener(this);
@@ -49,9 +53,10 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         final Button retrunButton = (Button) findViewById(R.id.button_returun);
         retrunButton.setOnClickListener(this);
 
-        Intent intent = getIntent();
         // MainActivityから値を受け取る
-        QuantityInfo info = (QuantityInfo) getIntent().getSerializableExtra(INTENT_KEY_QUANTITY_INFO_LIST);
+        int row = getIntent().getIntExtra(INTENT_KEY_QUANTITY_INFO_ROW,0);
+        info = getInfoList().get(row);
+        imageView.setImageBitmap(info.bitmap);
 
         // id textView1をt1に当てはめている
         TextView time = (TextView) findViewById(R.id.textView1);
@@ -66,7 +71,8 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         quantity.setText("" + info.getQuantity());
     }
 
-    // ボタンを押した時
+
+    // ボタンを押下後の処理
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button_activity_detail_select:
@@ -93,44 +99,40 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
         if (requestCode == RESULT_PICK_IMAGEFILE && resultCode == RESULT_OK) {
-            Uri uri = null;
             if (resultData != null) {
-                uri = resultData.getData();
-
-                try {
-                    bitmap = getBitmapFromUri(uri);
-                    imageView.setImageBitmap(bitmap);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                Uri uri = resultData.getData();
+                imageView.setImageURI(uri);
+                Bitmap bitmap = getBitmapFromUri(uri);
+                info.bitmap = bitmap;
             }
         }
     }
 
-
     // 画像表示
-    private Bitmap getBitmapFromUri(Uri uri) throws IOException {
-        ParcelFileDescriptor parcelFileDescriptor =
-                getContentResolver().openFileDescriptor(uri, "r");
-        FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
-        Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
-        parcelFileDescriptor.close();
-        return image;
+    private Bitmap getBitmapFromUri(Uri uri) {
+        try {
+            return MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+        } catch (IOException e) {
+            return null;
+        }
     }
 
     // 戻るボタン押下時の処理
     public void retrunButton() {
-        Intent intent = new Intent();
-        intent.putExtra("intent-key", bitmap);
-        setResult(RESULT_OK, intent);
         finish();
     }
 
+    // AppBeanから情報取得
+    private ArrayList<QuantityInfo> getInfoList(){
+        AppBean appBean = (AppBean) getApplication();
+        return appBean.list;
+    }
+
     // Intentの生成
-    public static Intent getNewIntent(Activity activity, QuantityInfo infoList) {
+    public static Intent getNewIntent(Activity activity, int row) {
 
         Intent intent = new Intent(activity, DetailActivity.class);
-        intent.putExtra(INTENT_KEY_QUANTITY_INFO_LIST, infoList);
+        intent.putExtra(INTENT_KEY_QUANTITY_INFO_ROW, row);
 
         return intent;
     }

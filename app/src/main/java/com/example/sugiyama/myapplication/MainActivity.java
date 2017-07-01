@@ -30,7 +30,6 @@ import java.util.TimerTask;
 public class MainActivity extends AppCompatActivity implements  View.OnClickListener, AdapterView.OnItemClickListener,AdapterView.OnItemLongClickListener {
 
     private int quantity = 0;
-    private ArrayList<QuantityInfo> list = new ArrayList<>();
     private QuantityInfoAdapter adapter = null;
     private final SimpleDateFormat formatter = new SimpleDateFormat("kk:mm:ss");
     private final Timer timer = new Timer();
@@ -106,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
 
         ListView quantityInfoListView = (ListView) findViewById(R.id.listview_quantity_info);
         adapter = new QuantityInfoAdapter(MainActivity.this);
-        adapter.setQuantityInfoList(list);
+        adapter.setQuantityInfoList(getInfoList());
         quantityInfoListView.setAdapter(adapter);
         quantityInfoListView.setOnItemClickListener(this);
         quantityInfoListView.setOnItemLongClickListener(this);
@@ -163,7 +162,7 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
     private void selectList() {
         int sum = 0;
 
-        for (QuantityInfo info : list) {
+        for (QuantityInfo info : getInfoList()) {
             // チェックボックスにチェックが入っている場合
             if (info.isSelected()) {
                 // 数量を加算する
@@ -179,7 +178,7 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
     // クリアボタン押下後の処理
     private void clearList() {
         // リストを全てクリア
-        list.clear();
+        getInfoList().clear();
         // リストの表示更新
         adapter.notifyDataSetChanged();
     }
@@ -188,6 +187,7 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
     // 追加ボタン押下後の処理
     private void addQuantityInfo() {
 
+        // 時刻を取得する
         TextView textView = (TextView) findViewById(R.id.textview_time);
         String time = textView.getText().toString();
         // コメントを取得する
@@ -198,25 +198,9 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
         quantityInfo.setTime(time);
         quantityInfo.setComment(comment);
         quantityInfo.setQuantity(quantity);
-
-        //リストの表示更新
-        list.add(quantityInfo);
+        getInfoList().add(quantityInfo);
+        // リストの表示更新
         adapter.notifyDataSetChanged();
-
-        //        // 時刻を取得する
-//        TextView textView = (TextView) findViewById(R.id.textview_time);
-//        String time = textView.getText().toString();
-//        // コメントを取得する
-//        EditText edittext = (EditText) findViewById(R.id.edit_comment);
-//        String comment = edittext.getText().toString();
-//        // 数量情報を1件追加する
-//        QuantityInfo quantityInfo = new QuantityInfo();
-//        quantityInfo.setTime(time);
-//        quantityInfo.setComment(comment);
-//        quantityInfo.setQuantity(quantity);
-//        list.add(quantityInfo);
-//        // リストの表示更新
-//        adapter.notifyDataSetChanged();
 
     }
 
@@ -242,7 +226,7 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
     @Override
     // ビュー押下後の処理
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        QuantityInfo info = list.get(position);
+        QuantityInfo info = getInfoList().get(position);
         info.setSelected(!info.isSelected());
         adapter.notifyDataSetChanged();
     }
@@ -250,31 +234,17 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
         // 画面遷移
-        QuantityInfo info = list.get(position);
-        info.setEditIndex(position);
-        Intent intent = DetailActivity.getNewIntent(this, info);
+        QuantityInfo info = getInfoList().get(position);
+        Intent intent = DetailActivity.getNewIntent(this, position);
         startActivityForResult(intent, RESULT_CODE_SUB_ACTIVITY);
 
         return true;
     }
 
-    // メイン画面に遷移した時の処理
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        Log.d("onActivityResult", String.valueOf(resultCode));
-       super.onActivityResult(requestCode, resultCode, intent);
-
-        switch (requestCode) {
-            case RESULT_CODE_SUB_ACTIVITY:
-                if (resultCode == RESULT_OK) {
-
-                    intent = getIntent();
-                    Bitmap bitmap = (Bitmap) intent.getParcelableExtra("intent-key");
-                    Set<String> keys = intent.getExtras().keySet();
-                    for (String key : keys) {
-                        Log.d("intent-key", key);
-                    }
-                }
-        }
+    // AppBeanから情報取得
+    private ArrayList<QuantityInfo> getInfoList(){
+        AppBean appBean = (AppBean) getApplication();
+        return appBean.list;
     }
+
 }
