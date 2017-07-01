@@ -1,5 +1,6 @@
 package com.example.sugiyama.myapplication;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,30 +12,46 @@ import android.os.ParcelFileDescriptor;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import java.io.ByteArrayOutputStream;
 import java.io.FileDescriptor;
 import java.io.IOException;
+import java.util.ArrayList;
 
-public class DetailActivity extends AppCompatActivity  {
+public class DetailActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final int RESULT_PICK_IMAGEFILE = 1000;
+    private static final int RESULT_BACK = 9999;
     private ImageView imageView;
     private int mImageType = 0;
-
+    private ArrayList<QuantityInfo> infoList = new ArrayList<>();
+    private static final String INTENT_KEY_QUANTITY_INFO_LIST = "intent_key_quantity_kist";
+    Bitmap bitmap = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         setTitle("");
-        imageView = (ImageView)findViewById(R.id.image_View);
+        imageView = (ImageView) findViewById(R.id.image_view);
+
+        initView();
+    }
+
+    private void initView() {
+        // 画像選択ボタン
+        final Button selectButton = (Button) findViewById(R.id.button_activity_detail_select);
+        selectButton.setOnClickListener(this);
+
+        // 戻るボタン
+        final Button retrunButton = (Button) findViewById(R.id.button_returun);
+        retrunButton.setOnClickListener(this);
 
         Intent intent = getIntent();
         //MainActivityから値を受け取る
-        QuantityInfo info = (QuantityInfo) getIntent().getSerializableExtra("QuantityInfo");
+        QuantityInfo info = (QuantityInfo) getIntent().getSerializableExtra(INTENT_KEY_QUANTITY_INFO_LIST);
 
         //id textView1をt1に当てはめている
         TextView time = (TextView) findViewById(R.id.textView1);
@@ -47,38 +64,49 @@ public class DetailActivity extends AppCompatActivity  {
         time.setText(info.getTime());
         comment.setText(info.getComment());
         quantity.setText("" + info.getQuantity());
+    }
+
+    // ボタンを押した時
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.button_activity_detail_select:
+                selectButton();
+                return;
+            case R.id.button_returun:
+                retrunButton();
+                return;
+            default:
+        }
+    }
 
 
-        // 画像表示ボタン押下後の処理
-        findViewById(R.id.button_activity_detail_select).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-                intent.addCategory(Intent.CATEGORY_OPENABLE);
-                intent.setType("image/*");
-                startActivityForResult(intent, RESULT_PICK_IMAGEFILE);
-            }
-        });
+    // 画像表示ボタン押下後の処理
+    public void selectButton() {
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("image/*");
+        startActivityForResult(intent, RESULT_PICK_IMAGEFILE);
     }
 
 
     // 画像選択、取得
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
-            if (requestCode == RESULT_PICK_IMAGEFILE && resultCode == RESULT_OK) {
-                Uri uri = null;
-                if (resultData != null) {
-                    uri = resultData.getData();
+        if (requestCode == RESULT_PICK_IMAGEFILE && resultCode == RESULT_OK) {
+            Uri uri = null;
+            if (resultData != null) {
+                uri = resultData.getData();
 
-                    try {
-                        Bitmap bmp = getBitmapFromUri(uri);
-                        imageView.setImageBitmap(bmp);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                try {
+                    bitmap = getBitmapFromUri(uri);
+                    imageView.setImageBitmap(bitmap);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         }
+    }
+
 
     // 画像表示
     private Bitmap getBitmapFromUri(Uri uri) throws IOException {
@@ -90,21 +118,20 @@ public class DetailActivity extends AppCompatActivity  {
         return image;
     }
 
-    // 画像を保持させる
-
-
-
-
-
-
-
-    private void selectImage() {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("image/*");
-        startActivityForResult(intent, mImageType);
+    // 戻るボタン押下時の処理
+    public void retrunButton() {
+        Intent intent = new Intent();
+        intent.putExtra("intent-key", bitmap);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
+    // Intentの生成
+    public static Intent getNewIntent(Activity activity, QuantityInfo infoList) {
 
-    // 画像削除ボタン押下後の処理
+        Intent intent = new Intent(activity, DetailActivity.class);
+        intent.putExtra(INTENT_KEY_QUANTITY_INFO_LIST, infoList);
 
+        return intent;
+    }
 }
