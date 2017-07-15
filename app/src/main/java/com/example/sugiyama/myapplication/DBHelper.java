@@ -25,7 +25,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String DB_CULUMN_TIME = "Time";
     public static final String DB_CULUM_SELECTED = "Selected";
     public static final String DB_IMAGE = "image";
-    // データベースバージョン
+    // データベースバージョン a
     public static final int DB_VERSION = 1;
 
     public DBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
