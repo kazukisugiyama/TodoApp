@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
     @Override
     protected void onPause() {
         super.onPause();
-        // バックグラウンドでの時刻表示の廃止
+        // バックグラウンドでの時刻表示の廃止 a
         timerTask.cancel();
     }
 
