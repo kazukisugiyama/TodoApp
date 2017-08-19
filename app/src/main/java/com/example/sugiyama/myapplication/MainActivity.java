@@ -240,11 +240,19 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
 
         return true;
     }
-
-    // AppBeanから情報取得
+    // SQLからの情報取得
     private ArrayList<QuantityInfo> getInfoList(){
-        AppBean appBean = (AppBean) getApplication();
-        return appBean.list;
+
     }
 
 }
+
+
+
+//    // AppBeanから情報取得
+//    private ArrayList<QuantityInfo> getInfoList(){
+//        AppBean appBean = (AppBean) getApplication();
+//        return appBean.list;
+//    }
+
+

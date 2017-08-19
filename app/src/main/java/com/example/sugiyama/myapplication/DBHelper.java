@@ -15,39 +15,37 @@ import static android.content.ContentValues.TAG;
 
 public class DBHelper extends SQLiteOpenHelper {
     // データベース名
-    public static final String DB_NAME_INFO = "Info";
+    public static final String DB_NAME_INFO = "info";
     // テーブル名
-    public static final String DB_TABLE_APPLICATION_INFO = "ApplicationInfo";
+    public static final String DB_TABLE_APPLICATION_INFO = "applicationInfo";
     // カラム名
     public static final String DB_COLUMN_ID = "id";
-    public static final String DB_COLUMN_QUANTITY = "Quantity";
-    public static final String DB_CULUMN_COMMENT = "Comment";
-    public static final String DB_CULUMN_TIME = "Time";
-    public static final String DB_CULUM_SELECTED = "Selected";
+    public static final String DB_COLUMN_QUANTITY = "quantity";
+    public static final String DB_CULUMN_COMMENT = "comment";
+    public static final String DB_CULUMN_TIME = "time";
     public static final String DB_IMAGE = "image";
-    // データベースバージョンa
-    public static final int DB_VERSION = 1;
 
-    public DBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, name, factory, version);
+    public DBHelper(Context context) {
+        super(context, "quantityinfo.db", null, 1);
     }
 
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         // テーブルの作成
-        String sql = "create table DB_TABLE_APPLICATION_INFO(DB_COLUMN_QUANTITY," +
-                "DB_CULUMN_COMMENT" + "DB_CULUMN_TIME" + "DB_CULUM_SELECTED" + "DB_IMAGE)";
+        String sql = "create table "
+                + DB_TABLE_APPLICATION_INFO + "("
+                + DB_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + DB_COLUMN_QUANTITY + " INTEGER, "
+                + DB_CULUMN_COMMENT + " TEXT, "
+                + DB_CULUMN_TIME + " INTEGER, "
+                + DB_IMAGE + " BLOB "
+                + ")";
         db.execSQL(sql);
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        String sql = "SELECT * FROM DB_TABLE_APPLICATION_INFO";
-        // テーブル内にカラムが含まれていなかった場合
-        if (sql == null) {
-            sql = "DB_TABLE_APPLICATION_INFO(DB_COLUMN_QUANTITY," +
-                    "DB_CULUMN_COMMENT" + "DB_CULUMN_TIME" + "DB_CULUM_SELECTED" + "DB_IMAGE)";
-        }
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+
     }
 }

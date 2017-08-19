@@ -19,6 +19,7 @@ import android.widget.TextView;
 import java.io.ByteArrayOutputStream;
 import java.io.FileDescriptor;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.URI;
 import java.util.ArrayList;
 
@@ -56,7 +57,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         // MainActivityから値を受け取る
         int row = getIntent().getIntExtra(INTENT_KEY_QUANTITY_INFO_ROW,0);
         info = getInfoList().get(row);
-        imageView.setImageBitmap(info.bitmap);
+        imageView.setImageBitmap(info.getBitmap());
 
         // id textView1をt1に当てはめている
         TextView time = (TextView) findViewById(R.id.textView1);
@@ -103,7 +104,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                 Uri uri = resultData.getData();
                 imageView.setImageURI(uri);
                 Bitmap bitmap = getBitmapFromUri(uri);
-                info.bitmap = bitmap;
+                info.setBitmap(bitmap);
             }
         }
     }
@@ -122,11 +123,6 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         finish();
     }
 
-    // AppBeanから情報取得
-    private ArrayList<QuantityInfo> getInfoList(){
-        AppBean appBean = (AppBean) getApplication();
-        return appBean.list;
-    }
 
     // Intentの生成
     public static Intent getNewIntent(Activity activity, int row) {
@@ -137,3 +133,13 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         return intent;
     }
 }
+
+
+
+
+
+//    // AppBeanから情報取得
+//    private ArrayList<QuantityInfo> getInfoList(){
+//        AppBean appBean = (AppBean) getApplication();
+//        return appBean.list;
+//    }

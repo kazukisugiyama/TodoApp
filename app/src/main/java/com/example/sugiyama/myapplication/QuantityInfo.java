@@ -12,9 +12,24 @@ public class QuantityInfo implements Serializable {
     private String time;
     private String comment;
     private boolean isSelected;
-    Bitmap bitmap;
+    private int id;
+    private Bitmap bitmap;
 
+    public int getId() {
+        return id;
+    }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
+
+    public void setBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
+    }
 
     public boolean isSelected() {
         return isSelected;
@@ -46,6 +61,7 @@ public class QuantityInfo implements Serializable {
     }
 
     public void setComment(String comment) {this.comment = comment;}
+
 }
 
 
