@@ -1,5 +1,6 @@
 package com.example.sugiyama.myapplication;
 
+import android.app.Application;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -21,7 +22,9 @@ import static com.example.sugiyama.myapplication.DBHelper.DB_TABLE_APPLICATION_I
  * Created by sugiyama on 2017/08/19.
  */
 
-public class DBManager {
+public class DBManager extends Application {
+
+
 
     // 一覧のデータ取得
     public ArrayList<QuantityInfo> getQuantityInfoList(Context context) {
@@ -58,41 +61,68 @@ public class DBManager {
             db.close();
         }
         return infoArrayList;
-
-        // データ追加
-        // データ参照
-        // データ削除
-        // データ更新 info list
-        public void updateList(){
-            ContentValues values = new ContentValues();
-            values.put(DB_COLUMN_QUANTITY,1);
-            values.put(DB_CULUMN_COMMENT,2);
-            values.put(DB_CULUMN_TIME,3);
-            values.put(DB_IMAGE,4);
-            // 指定した行のみ更新
-            String whereArgs[] = ;
-            try{
-                db.update(DB_TABLE_APPLICATION_INFO, values, "id = ?", )
-            }
-
-        }
     }
-}
+
+    // データ追加
+    public void addList(QuantityInfo addquantityInfo){
+
+    }
+
+    // データ削除
+    public void deleteList(int id){
+
+    }
+
+    // データ更新
+    public void updateList(QuantityInfo quantityInfo){
+
+    }
 
 
+    // データ参照
+    public ArrayList<QuantityInfo> getQuantityInfo(){
+        ArrayList<QuantityInfo> list = new ArrayList<>();
+        return list;
+    }
 
-//    public void updateList(){
-//        String whereClause = "text_column = ?";
-//        String whereArgs[] = new String[1];
-//        whereArgs[0] = "text";
+
+//    // データ追加
+//    public void addlist(SQLiteDatabase db) {
+//        ContentValues values = new ContentValues();
+//        values.put(DB_COLUMN_ID, 0);
+//        values.put(DB_COLUMN_QUANTITY, 1);
+//        values.put(DB_CULUMN_COMMENT, 2);
+//        values.put(DB_CULUMN_TIME, 3);
+//        values.put(DB_IMAGE, 4);
+//        db.insert(DB_TABLE_APPLICATION_INFO, null, values);
+//    }
 //
-//        try {
-//            db.update("sample_table", values, whereClause, whereArgs);
-//        } finally {
-//            db.close();
+//    // データ削除
+//    public void delete(SQLiteDatabase db) {
+//        ContentValues values = new ContentValues();
+//        values.put(DB_COLUMN_ID, 0);
+//        values.put(DB_COLUMN_QUANTITY, 1);
+//        values.put(DB_CULUMN_COMMENT, 2);
+//        values.put(DB_CULUMN_TIME, 3);
+//        values.put(DB_IMAGE, 4);
+//        db.delete(DB_TABLE_APPLICATION_INFO, null, null);
+//    }
+//
+//    // データ更新
+//    public void updateList(SQLiteDatabase db) {
+//        ContentValues values = new ContentValues();
+//        values.put(DB_COLUMN_QUANTITY, 1);
+//        values.put(DB_CULUMN_COMMENT, 2);
+//        values.put(DB_CULUMN_TIME, 3);
+//        values.put(DB_IMAGE, 4);
+//        db.update(DB_TABLE_APPLICATION_INFO, values, null, new String[]{null});
+//    }
+}
+            //            // 指定した行のみ更新
+//            String whereArgs[] = ;
+//            try{
+//                db.update(DB_TABLE_APPLICATION_INFO, values, "id = ?", );
+//            }
+//
 //        }
-
-    }
-
-    // 削除 ID分かればOK
 
