@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
     private TimerTask timerTask = null;
     static final int RESULT_CODE_SUB_ACTIVITY = 1000;
     private static final int RESULT_BACK = 9999;
+    private String test = "test";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
